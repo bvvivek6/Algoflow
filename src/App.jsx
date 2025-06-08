@@ -111,26 +111,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-slate-100  tracking-tight ">
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                  />
-                </svg>
-              </div>
               <div>
                 <h1 className="text-xl md:text-2xl font-medium tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Sorting Algorithm Visualizer
@@ -153,20 +138,19 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-2">
           {/* Left Panel - Controls */}
           <div className="xl:col-span-1 space-y-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
-              <InputArray onSubmit={setArray} initialArray={array} />
-            </div>
-
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
               <AlgorithmSelector
                 value={algorithm}
                 onChange={setAlgorithm}
                 options={ALGORITHMS}
               />
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
+              <InputArray onSubmit={setArray} initialArray={array} />
             </div>
 
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
@@ -222,7 +206,7 @@ function App() {
           </div>
 
           {/* Right Panel - Visualization */}
-          <div className="xl:col-span-2 space-y-2">
+          <div className="col-span-2 space-y-2">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
               <Visualizer step={currentStep} maxVal={maxVal} />
             </div>

@@ -9,7 +9,7 @@ export default function Visualizer({ step, maxVal }) {
         Visualization
       </h3>
       <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 border border-slate-200">
-        <div className="flex items-end justify-center gap-1 h-64 w-full">
+        <div className="flex items-end justify-center gap-1 h-20 w-full">
           {step.array.map((val, idx) => {
             const isCompared = step.compared.includes(idx);
             const isSwapped = step.swapped.includes(idx);
@@ -23,7 +23,7 @@ export default function Visualizer({ step, maxVal }) {
                 className="flex flex-col items-center gap-1 flex-1 max-w-[50px]"
               >
                 <div
-                  className={`w-full rounded-t-lg shadow-md transition-all duration-300 ease-in-out transform ${
+                  className={`w-full rounded-full shadow-md transition-all duration-300 ease-in-out  transform ${
                     isSwapped
                       ? "bg-gradient-to-t from-red-500 to-red-400 scale-110 shadow-lg"
                       : isCompared
@@ -59,7 +59,7 @@ export default function Visualizer({ step, maxVal }) {
             );
           })}
         </div>
-        <div className="mt-4 flex justify-center gap-4 text-xs">
+        <div className="mt-4 flex justify-center overflow-x-auto gap-4 text-xs">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-gradient-to-t from-blue-500 to-blue-400 rounded"></div>
             <span className="text-slate-600">Unsorted</span>
