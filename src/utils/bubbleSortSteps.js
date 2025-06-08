@@ -1,5 +1,3 @@
-// src/utils/bubbleSortSteps.js
-// Generates steps for Bubble Sort visualization
 export function getBubbleSortSteps(arr) {
   const steps = [];
   const a = arr.slice();

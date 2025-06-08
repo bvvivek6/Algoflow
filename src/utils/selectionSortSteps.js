@@ -1,4 +1,3 @@
-// Generates steps for Selection Sort visualization
 export function getSelectionSortSteps(arr) {
   const steps = [];
   const a = arr.slice();

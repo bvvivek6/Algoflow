@@ -1,4 +1,3 @@
-// Generates steps for Insertion Sort visualization
 export function getInsertionSortSteps(arr) {
   const steps = [];
   const a = arr.slice();
