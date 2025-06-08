@@ -1,10 +1,9 @@
-// src/components/AlgorithmSelector.jsx
 export default function AlgorithmSelector({ value, onChange, options }) {
   return (
     <div className="w-full">
       <h3 className="font-bold text-lg text-slate-700 mb-3 flex items-center gap-2">
         <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-          2
+          1
         </div>
         Choose Algorithm
       </h3>
