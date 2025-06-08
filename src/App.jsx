@@ -83,7 +83,7 @@ function App() {
           setIsPlaying(false);
           return idx;
         });
-      }, 1000);
+      }, 1500);
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -244,7 +244,7 @@ function App() {
           </div>
         </div>
       </main>
-      <footer className="bg-white text-gray-800 py-6 mt-8 md:mt-20">
+      <footer className="bg-white text-black py-6 mt-8 md:mt-20">
         <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm mb-4 md:mb-0">Built with ❤️ by Vivek.</div>
           <div className="flex space-x-6 text-sm">
@@ -252,7 +252,7 @@ function App() {
               href="https://github.com/bvvivek6/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              className="hover:text-gray-800 transition-colors"
             >
               GitHub
             </a>
