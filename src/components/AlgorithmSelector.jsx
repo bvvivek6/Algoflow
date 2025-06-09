@@ -13,7 +13,7 @@ export default function AlgorithmSelector({ value, onChange, options }) {
         </label>
         <div className="relative">
           <select
-            className="w-full appearance-none border-2 border-slate-200 rounded-xl px-4 py-3 text-lg bg-white/70 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 pr-12"
+            className="w-full appearance-none border-2 border-slate-200 rounded-xl px-4 py-2 text-md bg-white/70 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 pr-12"
             value={value}
             onChange={(e) => onChange(e.target.value)}
           >

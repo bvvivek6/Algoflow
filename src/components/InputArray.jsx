@@ -20,7 +20,7 @@ export default function InputArray({ onSubmit, initialArray }) {
       return;
     }
     if (arr.length > 8) {
-      alert("Please enter a maximum of 10 numbers.");
+      setError("Please enter a maximum of 8 numbers.");
       return;
     }
     setError("");
@@ -41,7 +41,7 @@ export default function InputArray({ onSubmit, initialArray }) {
             Enter numbers (comma-separated):
           </label>
           <input
-            className="w-full border-2 border-slate-200 rounded-xl px-4 py-2 text-lg bg-white/70 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 placeholder-slate-400"
+            className="w-full border-2 border-slate-200 rounded-xl px-4 py-2 text-md bg-white/70 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 placeholder-slate-400"
             value={input}
             onChange={handleChange}
             placeholder="e.g. 5, 3, 8, 1, 6, 2, 9"

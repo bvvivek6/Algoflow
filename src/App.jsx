@@ -244,7 +244,7 @@ function App() {
           </div>
         </div>
       </main>
-      <footer className="bg-white text-black py-6 mt-8 md:mt-12">
+      <footer className=" text-black py-6 mt-8 md:mt-20">
         <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm mb-4 md:mb-0">Built with ❤️ by Vivek.</div>
           <div className="flex space-x-2 text-sm">
