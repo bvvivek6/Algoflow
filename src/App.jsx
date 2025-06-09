@@ -7,6 +7,7 @@ import { getSelectionSortSteps } from "./utils/selectionSortSteps";
 import { getInsertionSortSteps } from "./utils/insertionSortSteps";
 import { getQuickSortSteps } from "./utils/quickSortSteps";
 import { getHeapSortSteps } from "./utils/heapSortSteps";
+import Resources from "./components/Resources";
 
 const ALGORITHMS = [
   {
@@ -93,12 +94,36 @@ const ALGORITHMS = [
 
 const DEFAULT_ARRAY = [5, 3, 8, 1, 4, 7, 2];
 
+async function fetchResources(algorithmLabel) {
+  const ytApi = "https://www.googleapis.com/youtube/v3/search";
+  const ytKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+  const ytQuery = encodeURIComponent(
+    algorithmLabel + " sorting algorithm explained"
+  );
+  let ytVideos = [];
+  try {
+    const res = await fetch(
+      `${ytApi}?part=snippet&q=${ytQuery}&type=video&maxResults=3&key=${ytKey}`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      ytVideos = data.items || [];
+    }
+  } catch {
+    alert("Failed to fetch data");
+  }
+
+  return { ytVideos };
+}
+
 function App() {
   const [array, setArray] = useState(DEFAULT_ARRAY);
   const [algorithm, setAlgorithm] = useState("bubble");
   const [steps, setSteps] = useState(() => getBubbleSortSteps(DEFAULT_ARRAY));
   const [stepIdx, setStepIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [resources, setResources] = useState({ ytVideos: [] });
+  const [loadingResources, setLoadingResources] = useState(false);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -122,10 +147,19 @@ function App() {
     return () => clearInterval(intervalRef.current);
   }, [isPlaying, steps.length]);
 
+  const algoObj = ALGORITHMS.find((a) => a.value === algorithm);
+
+  useEffect(() => {
+    setLoadingResources(true);
+    fetchResources(algoObj.label).then((res) => {
+      setResources(res);
+      setLoadingResources(false);
+    });
+  }, [algorithm, algoObj.label]);
+
   const maxVal = Math.max(...array, 1);
   const atEnd = stepIdx === steps.length - 1;
   const currentStep = steps[stepIdx];
-  const algoObj = ALGORITHMS.find((a) => a.value === algorithm);
 
   let highlightLines = [];
   if (algorithm === "bubble" && currentStep.compared.length === 2) {
@@ -183,7 +217,7 @@ function App() {
         </div>
       </header>
 
-      <main className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 gap-2 mx-auto px-2 pb-8 pt-4">
+      <div className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 grid-row-2 gap-2 mx-auto px-2 pb-2 pt-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {/* Left Panel - Controls */}
           <div className="xl:col-span-1 space-y-2">
@@ -223,24 +257,6 @@ function App() {
                 isAtEnd={atEnd}
               />
             </div>
-
-            {/* <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
-              <Controls
-                isPlaying={isPlaying}
-                onPlayPause={() => setIsPlaying((p) => !p)}
-                onStepBack={() => setStepIdx((idx) => Math.max(0, idx - 1))}
-                onStepForward={() =>
-                  setStepIdx((idx) => Math.min(steps.length - 1, idx + 1))
-                }
-                onReset={() => {
-                  setStepIdx(0);
-                  setIsPlaying(false);
-                }}
-                canStepBack={stepIdx > 0}
-                canStepForward={stepIdx < steps.length - 1}
-                isAtEnd={atEnd}
-              />
-            </div> */}
           </div>
         </div>
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl md:w-xl  p-6 h-[30%] border border-slate-200">
@@ -289,8 +305,11 @@ function App() {
             </div>
           </div>
         </div>
-      </main>
-      <footer className=" text-black py-6 mt-8 md:mt-20">
+      </div>
+      <div className="max-w-7xl mx-auto px-2 pb-4">
+        <Resources resources={resources} loadingResources={loadingResources} />
+      </div>
+      <footer className=" text-black p-6 my-2">
         <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm mb-4 md:mb-0">Built with ❤️ by Vivek.</div>
           <div className="flex space-x-2 text-sm">
