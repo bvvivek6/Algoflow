@@ -26,11 +26,30 @@ export default function Visualizer({
           {step &&
             step.array &&
             step.array.map((val, idx) => {
-              const isCompared = step.compared.includes(idx);
-              const isSwapped = step.swapped.includes(idx);
+              const isCompared = step.compared && step.compared.includes(idx);
+              const isSwapped = step.swapped && step.swapped.includes(idx);
               const isSelected = step.selected && step.selected.includes(idx);
               const isSorted = step.sorted && step.sorted.includes(idx);
               const height = (val / maxVal) * 100;
+
+              let barClass = "bg-gradient-to-t from-blue-500 to-blue-400";
+              if (isSwapped)
+                barClass =
+                  "bg-gradient-to-t from-red-500 to-red-400 scale-110 ";
+              else if (isCompared)
+                barClass =
+                  "bg-gradient-to-t from-yellow-400 to-yellow-300 scale-105 ";
+              else if (isSelected)
+                barClass =
+                  "bg-gradient-to-t from-purple-500 to-purple-400 scale-105 ";
+              else if (isSorted)
+                barClass = "bg-gradient-to-t from-green-500 to-green-400";
+
+              let textClass = "text-slate-600";
+              if (isSwapped) textClass = "text-red-600";
+              else if (isCompared) textClass = "text-yellow-600";
+              else if (isSelected) textClass = "text-purple-600";
+              else if (isSorted) textClass = "text-green-600";
 
               return (
                 <div
@@ -38,17 +57,7 @@ export default function Visualizer({
                   className="flex flex-col items-center gap-1 flex-1 max-w-[50px]"
                 >
                   <div
-                    className={`w-full rounded-full  transition-all duration-300 ease-in-out  transform ${
-                      isSwapped
-                        ? "bg-gradient-to-t from-red-500 to-red-400 scale-110 "
-                        : isCompared
-                        ? "bg-gradient-to-t from-yellow-400 to-yellow-300 scale-105 "
-                        : isSelected
-                        ? "bg-gradient-to-t from-purple-500 to-purple-400 scale-105 "
-                        : isSorted
-                        ? "bg-gradient-to-t from-green-500 to-green-400"
-                        : "bg-gradient-to-t from-blue-500 to-blue-400"
-                    }`}
+                    className={`w-full rounded-full  transition-all duration-300 ease-in-out  transform ${barClass}`}
                     style={{
                       height: `${height}%`,
                       minHeight: "20px",
@@ -56,17 +65,7 @@ export default function Visualizer({
                     title={`Value: ${val}`}
                   />
                   <span
-                    className={`text-sm font-semibold transition-colors duration-300 ${
-                      isSwapped
-                        ? "text-red-600"
-                        : isCompared
-                        ? "text-yellow-600"
-                        : isSelected
-                        ? "text-purple-600"
-                        : isSorted
-                        ? "text-green-600"
-                        : "text-slate-600"
-                    }`}
+                    className={`text-sm font-semibold transition-colors duration-300 ${textClass}`}
                   >
                     {val}
                   </span>
@@ -89,7 +88,7 @@ export default function Visualizer({
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-gradient-to-t from-purple-500 to-purple-400 rounded"></div>
-            <span className="text-slate-600">Selected</span>
+            <span className="text-slate-600">Pivot/Selected</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded"></div>
@@ -101,6 +100,15 @@ export default function Visualizer({
         {step && step.compared && step.compared.length === 2 && !atEnd ? (
           <div className="text-center">
             <p className="text-slate-700 text-lg">
+              {step.selected && step.selected.length === 1 ? (
+                <>
+                  Pivot:{" "}
+                  <span className="font-bold text-purple-600">
+                    {step.array[step.selected[0]]}
+                  </span>
+                  <br />
+                </>
+              ) : null}
               Comparing{" "}
               <span className="font-bold text-blue-600">
                 {step.array[step.compared[0]]}
@@ -110,7 +118,7 @@ export default function Visualizer({
                 {step.array[step.compared[1]]}
               </span>
             </p>
-            {step.swapped.length === 2 && (
+            {step.swapped && step.swapped.length === 2 && (
               <p className="text-red-600 font-semibold mt-2 flex items-center justify-center gap-2">
                 <svg
                   className="w-5 h-5"
