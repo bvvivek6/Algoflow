@@ -1,7 +1,7 @@
 export default function Visualizer({
   step,
   maxVal,
-  stepIdx, 
+  stepIdx,
   steps,
   atEnd,
   isPlaying,
@@ -38,13 +38,13 @@ export default function Visualizer({
                   className="flex flex-col items-center gap-1 flex-1 max-w-[50px]"
                 >
                   <div
-                    className={`w-full rounded-full shadow-md transition-all duration-300 ease-in-out  transform ${
+                    className={`w-full rounded-full  transition-all duration-300 ease-in-out  transform ${
                       isSwapped
-                        ? "bg-gradient-to-t from-red-500 to-red-400 scale-110 shadow-lg"
+                        ? "bg-gradient-to-t from-red-500 to-red-400 scale-110 "
                         : isCompared
-                        ? "bg-gradient-to-t from-yellow-400 to-yellow-300 scale-105 shadow-md"
+                        ? "bg-gradient-to-t from-yellow-400 to-yellow-300 scale-105 "
                         : isSelected
-                        ? "bg-gradient-to-t from-purple-500 to-purple-400 scale-105 shadow-md"
+                        ? "bg-gradient-to-t from-purple-500 to-purple-400 scale-105 "
                         : isSorted
                         ? "bg-gradient-to-t from-green-500 to-green-400"
                         : "bg-gradient-to-t from-blue-500 to-blue-400"
@@ -168,7 +168,7 @@ export default function Visualizer({
         </button>
 
         <button
-          className={`px-4 py-2 w-[100px] rounded-full text-white font-medium transition-all duration-200 ${
+          className={`px-6 py-2  rounded-full text-white font-medium transition-all duration-200 ${
             isPlaying
               ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
               : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
@@ -185,7 +185,6 @@ export default function Visualizer({
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
-            {isPlaying ? "Pause" : "Play"}
           </div>
         </button>
 

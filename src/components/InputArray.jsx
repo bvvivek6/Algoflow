@@ -19,6 +19,10 @@ export default function InputArray({ onSubmit, initialArray }) {
       setError("Please enter at least one valid number.");
       return;
     }
+    if (arr.length > 8) {
+      alert("Please enter a maximum of 10 numbers.");
+      return;
+    }
     setError("");
     onSubmit(arr);
   }
@@ -50,7 +54,7 @@ export default function InputArray({ onSubmit, initialArray }) {
         </div>{" "}
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-xl px-4 py-2 hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium rounded-xl px-4 py-2"
         >
           Set Array
         </button>

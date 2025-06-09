@@ -1,1 +1,0 @@
-This is a React + Vite + Tailwind CSS project for visualizing sorting algorithms step-by-step. Use functional components, hooks, and modular code. All sorting algorithms should output step-by-step states for visualization. UI should be clean, responsive, and use Tailwind CSS.
