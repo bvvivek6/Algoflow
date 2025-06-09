@@ -5,6 +5,8 @@ import Visualizer from "./components/Visualizer";
 import { getBubbleSortSteps } from "./utils/bubbleSortSteps";
 import { getSelectionSortSteps } from "./utils/selectionSortSteps";
 import { getInsertionSortSteps } from "./utils/insertionSortSteps";
+import { getQuickSortSteps } from "./utils/quickSortSteps";
+import { getHeapSortSteps } from "./utils/heapSortSteps";
 
 const ALGORITHMS = [
   {
@@ -57,6 +59,36 @@ const ALGORITHMS = [
     timeComplexity: "O(n²)",
     spaceComplexity: "O(1)",
   },
+  {
+    value: "quick",
+    label: "Quick Sort",
+    getSteps: getQuickSortSteps,
+    pseudocode: [
+      "if low < high:",
+      "    pi = partition(arr, low, high)",
+      "    quickSort(arr, low, pi - 1)",
+      "    quickSort(arr, pi + 1, high)",
+    ],
+    description:
+      "Quick Sort picks a pivot and partitions the array around the pivot, sorting recursively.",
+    timeComplexity: "O(n log n)",
+    spaceComplexity: "O(log n)",
+  },
+  {
+    value: "heap",
+    label: "Heap Sort",
+    getSteps: getHeapSortSteps,
+    pseudocode: [
+      "buildMaxHeap(arr)",
+      "for i = n-1 down to 1:",
+      "    swap arr[0] and arr[i]",
+      "    heapify(arr, 0, i)",
+    ],
+    description:
+      "Heap Sort uses a binary heap to sort the array by repeatedly removing the largest element.",
+    timeComplexity: "O(n log n)",
+    spaceComplexity: "O(1)",
+  },
 ];
 
 const DEFAULT_ARRAY = [5, 3, 8, 1, 4, 7, 2];
@@ -107,11 +139,25 @@ function App() {
   } else if (algorithm === "insertion") {
     if (currentStep.compared.length === 2) highlightLines = [3, 4];
     if (currentStep.swapped.length === 2) highlightLines = [4, 5];
+  } else if (algorithm === "quick") {
+    if (currentStep.selected && currentStep.selected.length === 1)
+      highlightLines.push(1);
+    if (currentStep.compared && currentStep.compared.length === 2)
+      highlightLines.push(2);
+    if (currentStep.swapped && currentStep.swapped.length === 2) {
+      highlightLines.push(3);
+      highlightLines.push(4);
+    }
+  } else if (algorithm === "heap") {
+    if (currentStep.compared && currentStep.compared.length === 2)
+      highlightLines.push(2);
+    if (currentStep.swapped && currentStep.swapped.length === 2)
+      highlightLines.push(3);
   }
 
   return (
     <div className="min-h-screen bg-slate-100 items-center tracking-tight ">
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
         <div className="md:max-w-7xl w-full mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
