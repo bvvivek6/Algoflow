@@ -103,7 +103,7 @@ async function fetchResources(algorithmLabel) {
   let ytVideos = [];
   try {
     const res = await fetch(
-      `${ytApi}?part=snippet&q=${ytQuery}&type=video&maxResults=3&key=${ytKey}`
+      `${ytApi}?part=snippet&q=${ytQuery}&type=video&maxResults=4&key=${ytKey}`
     );
     if (res.ok) {
       const data = await res.json();
