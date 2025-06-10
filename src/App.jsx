@@ -217,7 +217,7 @@ function App() {
         </div>
       </header>
 
-      <div className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 grid-row-2 gap-2 mx-auto px-2 pb-2 pt-4">
+      <div className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 grid-row-2 gap-2 mx-auto px-2 pb-2 pt-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {/* Left Panel - Controls */}
           <div className="xl:col-span-1 space-y-2">
