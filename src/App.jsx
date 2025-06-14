@@ -190,7 +190,7 @@ function App() {
       highlightLines.push(3);
   }
   useEffect(() => {
-    const timer = setTimeout(() => setShowWelcome(false), 2000);
+    const timer = setTimeout(() => setShowWelcome(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -200,9 +200,9 @@ function App() {
         {showWelcome && (
           <motion.div
             className="absolute left-1/2 -translate-x-1/2 w-[90vw] md:w-[32vw] px-6 py-3 bg-black/70  z-20 flex items-center backdrop-blur-lg justify-center rounded-full shadow-lg"
-            initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 30, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+            initial={{ opacity: 0, y: -20, filter: "blur(20px)", scale: 0.6 }}
+            animate={{ opacity: 1, y: 25, filter: "blur(0px)", scale: 1 }}
+            exit={{ opacity: 0, y: -20, filter: "blur(20px)", scale: 0.6 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             <p className="text-center w-full text-white font-medium md:text-sm text-xs">
@@ -212,7 +212,12 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="min-h-screen bg-slate-100 items-center tracking-tight z-10">
+      <motion.div
+        className="min-h-screen bg-slate-100 items-center tracking-tight z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
+      >
         <header className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
           <div className="md:max-w-7xl w-full mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
@@ -363,7 +368,7 @@ function App() {
             </div>
           </div>
         </footer>
-      </div>
+      </motion.div>
     </div>
   );
 }
