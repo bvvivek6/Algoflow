@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import InputArray from "./components/InputArray";
 import AlgorithmSelector from "./components/AlgorithmSelector";
 import Visualizer from "./components/Visualizer";
@@ -8,7 +8,7 @@ import { getInsertionSortSteps } from "./utils/insertionSortSteps";
 import { getQuickSortSteps } from "./utils/quickSortSteps";
 import { getHeapSortSteps } from "./utils/heapSortSteps";
 import Resources from "./components/Resources";
-
+import { motion, AnimatePresence } from "framer-motion";
 const ALGORITHMS = [
   {
     value: "bubble",
@@ -124,6 +124,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [resources, setResources] = useState({ ytVideos: [] });
   const [loadingResources, setLoadingResources] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -188,154 +189,181 @@ function App() {
     if (currentStep.swapped && currentStep.swapped.length === 2)
       highlightLines.push(3);
   }
+  useEffect(() => {
+    const timer = setTimeout(() => setShowWelcome(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-100 items-center tracking-tight ">
-      <header className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
-        <div className="md:max-w-7xl w-full mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div>
-                <h1 className="text-lg md:text-2xl font-semibold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  AlgoFlow
-                </h1>
-                <p className="md:text-sm text-xs text-slate-500">
-                  Learn how sorting algorithms work step by step
-                </p>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center gap-4 text-sm text-slate-500">
-              <div className="text-right">
-                <p className="font-semibold text-slate-700">{algoObj.label}</p>
-                <p>
-                  Time: {algoObj.timeComplexity} | Space:{" "}
-                  {algoObj.spaceComplexity}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 grid-row-2 gap-2 mx-auto px-2 pb-2 pt-2">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          {/* Left Panel - Controls */}
-          <div className="xl:col-span-1 space-y-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
-              <AlgorithmSelector
-                value={algorithm}
-                onChange={setAlgorithm}
-                options={ALGORITHMS}
-              />
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
-              <InputArray onSubmit={setArray} initialArray={array} />
-            </div>
-          </div>
-
-          {/* Right Panel - Visualization */}
-          <div className="col-span-2 space-y-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
-              <Visualizer
-                step={currentStep}
-                maxVal={maxVal}
-                stepIdx={stepIdx}
-                atEnd={atEnd}
-                steps={steps}
-                isPlaying={isPlaying}
-                onPlayPause={() => setIsPlaying((p) => !p)}
-                onStepBack={() => setStepIdx((idx) => Math.max(0, idx - 1))}
-                onStepForward={() =>
-                  setStepIdx((idx) => Math.min(steps.length - 1, idx + 1))
-                }
-                onReset={() => {
-                  setStepIdx(0);
-                  setIsPlaying(false);
-                }}
-                canStepBack={stepIdx > 0}
-                canStepForward={stepIdx < steps.length - 1}
-                isAtEnd={atEnd}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl md:w-xl  p-6 h-[30%] border border-slate-200">
-          <h3 className="font-bold text-lg text-slate-700 mb-3 flex items-center gap-2">
-            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-              📝
-            </div>
-            Algorithm Info
-          </h3>
-          <div className="space-y-4">
-            <p className="text-slate-600 text-sm leading-tight">
-              {algoObj.description}
+    <div className="relative z-0">
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 w-[90vw] md:w-[32vw] px-6 py-3 bg-black/70  z-20 flex items-center backdrop-blur-lg justify-center rounded-full shadow-lg"
+            initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 30, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            <p className="text-center w-full text-white font-medium md:text-sm text-xs">
+              Analyzing algorithms made simple — Welcome to{" "}
+              <span className="text-blue-400">AlgoFlow! </span>🚀📊
             </p>
-            <div className="grid grid-cols-2 gap-4 text-xs">
-              <div className="bg-blue-50 rounded-lg p-3">
-                <p className="font-semibold text-blue-700">Time Complexity</p>
-                <p className="text-blue-600 font-mono">
-                  {algoObj.timeComplexity}
-                </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className="min-h-screen bg-slate-100 items-center tracking-tight z-10">
+        <header className="bg-white/50 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
+          <div className="md:max-w-7xl w-full mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div>
+                  <h1 className="text-lg md:text-2xl font-semibold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    AlgoFlow
+                  </h1>
+                  <p className="md:text-sm text-xs text-slate-500">
+                    Learn how sorting algorithms work step by step
+                  </p>
+                </div>
               </div>
-              <div className="bg-purple-50 rounded-lg p-3">
-                <p className="font-semibold text-purple-700">
-                  Space Complexity
-                </p>
-                <p className="text-purple-600 font-mono">
-                  {algoObj.spaceComplexity}
-                </p>
+              <div className="hidden md:flex items-center gap-4 text-sm text-slate-500">
+                <div className="text-right">
+                  <p className="font-semibold text-slate-700">
+                    {algoObj.label}
+                  </p>
+                  <p>
+                    Time: {algoObj.timeComplexity} | Space:{" "}
+                    {algoObj.spaceComplexity}
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="bg-slate-50 rounded-lg p-3">
-              <p className="font-semibold text-slate-700 mb-2">Pseudocode</p>
-              <pre className="text-xs leading-relaxed">
-                {algoObj.pseudocode.map((line, i) => (
-                  <div
-                    key={i}
-                    className={`px-2 py-1 rounded transition-all duration-200 ${
-                      highlightLines.includes(i)
-                        ? "bg-yellow-200 font-semibold"
-                        : ""
-                    }`}
-                  >
-                    {line}
-                  </div>
-                ))}
-              </pre>
+          </div>
+        </header>
+
+        <div className="md:max-w-7xl w-full flex md:flex-row  flex-col grid-cols-1 md:grid-cols-3 grid-row-2 gap-2 mx-auto px-2 pb-2 pt-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            {/* Left Panel - Controls */}
+            <div className="xl:col-span-1 space-y-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
+                <AlgorithmSelector
+                  value={algorithm}
+                  onChange={setAlgorithm}
+                  options={ALGORITHMS}
+                />
+              </div>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
+                <InputArray onSubmit={setArray} initialArray={array} />
+              </div>
+            </div>
+
+            {/* Right Panel - Visualization */}
+            <div className="col-span-2 space-y-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200">
+                <Visualizer
+                  step={currentStep}
+                  maxVal={maxVal}
+                  stepIdx={stepIdx}
+                  atEnd={atEnd}
+                  steps={steps}
+                  isPlaying={isPlaying}
+                  onPlayPause={() => setIsPlaying((p) => !p)}
+                  onStepBack={() => setStepIdx((idx) => Math.max(0, idx - 1))}
+                  onStepForward={() =>
+                    setStepIdx((idx) => Math.min(steps.length - 1, idx + 1))
+                  }
+                  onReset={() => {
+                    setStepIdx(0);
+                    setIsPlaying(false);
+                  }}
+                  canStepBack={stepIdx > 0}
+                  canStepForward={stepIdx < steps.length - 1}
+                  isAtEnd={atEnd}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl md:w-xl  p-6 h-[30%] border border-slate-200">
+            <h3 className="font-bold text-lg text-slate-700 mb-3 flex items-center gap-2">
+              <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                📝
+              </div>
+              Algorithm Info
+            </h3>
+            <div className="space-y-4">
+              <p className="text-slate-600 text-sm leading-tight">
+                {algoObj.description}
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <p className="font-semibold text-blue-700">Time Complexity</p>
+                  <p className="text-blue-600 font-mono">
+                    {algoObj.timeComplexity}
+                  </p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3">
+                  <p className="font-semibold text-purple-700">
+                    Space Complexity
+                  </p>
+                  <p className="text-purple-600 font-mono">
+                    {algoObj.spaceComplexity}
+                  </p>
+                </div>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-3">
+                <p className="font-semibold text-slate-700 mb-2">Pseudocode</p>
+                <pre className="text-xs leading-relaxed">
+                  {algoObj.pseudocode.map((line, i) => (
+                    <div
+                      key={i}
+                      className={`px-2 py-1 rounded transition-all duration-200 ${
+                        highlightLines.includes(i)
+                          ? "bg-yellow-200 font-semibold"
+                          : ""
+                      }`}
+                    >
+                      {line}
+                    </div>
+                  ))}
+                </pre>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-2 pb-4">
-        <Resources resources={resources} loadingResources={loadingResources} />
-      </div>
-      <footer className=" text-black p-6 my-2">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-sm mb-4 md:mb-0">Built with ❤️ by Vivek.</div>
-          <div className="flex space-x-2 text-sm">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <a
-              href="https://github.com/bvvivek6/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-800 transition-colors"
-            >
-              GitHub
-            </a>
-          </div>
+        <div className="max-w-7xl mx-auto px-2 pb-4">
+          <Resources
+            resources={resources}
+            loadingResources={loadingResources}
+          />
         </div>
-      </footer>
+        <footer className=" text-black p-6 my-2">
+          <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <div className="text-sm mb-4 md:mb-0">Built with ❤️ by Vivek.</div>
+            <div className="flex space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <a
+                href="https://github.com/bvvivek6/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-800 transition-colors"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
